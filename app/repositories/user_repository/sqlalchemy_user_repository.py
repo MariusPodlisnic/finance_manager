@@ -24,11 +24,9 @@ class SqlAlchemyUserRepository(UserRepository):
 
         return data
 
-    def get_by_id(self,user_id:UUID) -> User:
+    def get_by_id(self,user_id:UUID) -> User | None:
         statement = select(User).where(User.id == user_id)
         user = self.db.scalar(statement)
-        if not user:
-            raise UserNotFoundError
         return user
 
     def get_by_email(self,email:str) -> User | None:
