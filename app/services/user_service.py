@@ -45,4 +45,3 @@ class UserService:
     def delete_user(self,user_id:UUID) -> None:
         user = self.get_user_by_id(user_id)
         self.repository.delete_user(user)
-
