@@ -1,7 +1,6 @@
 import uuid
 from datetime import date,datetime
 from decimal import Decimal
-
 from sqlalchemy import (
     CheckConstraint,
     Date,
@@ -122,4 +121,9 @@ class Transaction(Base):
         Uuid,
         ForeignKey("accounts.id"),
         nullable=False
+    )
+    created_at:Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        server_default=text('now()')
     )
