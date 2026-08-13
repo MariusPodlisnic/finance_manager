@@ -15,4 +15,4 @@ class UserCreate(BaseModel):
     password:str
 
 class UserUpdate(BaseModel):
-    email:EmailStr | None = None
+    email:EmailStr
