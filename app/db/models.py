@@ -42,7 +42,7 @@ class User(Base):
         nullable=False,
         server_default=text('now()')
     )
-    accounts:Mapped[list["Account"]] = relationship(back_populates="users")
+    accounts:Mapped[list["Account"]] = relationship(back_populates="user")
 
 class Account(Base):
     __tablename__ = "accounts"

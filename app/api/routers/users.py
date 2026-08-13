@@ -17,7 +17,7 @@ users_router = APIRouter(
 
 @users_router.get(
     "",
-    response_model=UserResponse,
+    response_model=list[UserResponse],
     summary="Get users",
     responses=error_responses(400,500)
 )
