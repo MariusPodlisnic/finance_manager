@@ -3,6 +3,7 @@ from app.repositories.user_repository.base import UserRepository
 from app.db.models import User
 from app.api.schemas.user_schemas import UserCreate,UserUpdate
 from app.exceptions.user_exceptions import UserEmailAlreadyExists,UserNotFoundError
+from app.utils.password import hash_password
 
 class UserService:
     def __init__(self,repository:UserRepository):
@@ -13,6 +14,7 @@ class UserService:
 
     def create_user(self , request:UserCreate):
         email = request.email
+        hashed_password = hash_password(request.password)
         if email:
             existing_user = self.repository.get_by_email(email)
             if existing_user:
@@ -20,7 +22,7 @@ class UserService:
 
         user = User(
             email=request.email,
-            password=request.password
+            password=hashed_password
         )
         return self.repository.create(user)
 

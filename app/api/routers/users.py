@@ -9,6 +9,7 @@ from app.api.schemas.user_schemas import (
 )
 from app.services import user_service
 from app.services.user_service import UserService
+from app.api.deps import get_current_user
 
 users_router = APIRouter(
     prefix="/api/users",
@@ -22,7 +23,8 @@ users_router = APIRouter(
     responses=error_responses(400,500)
 )
 def get_users(
-        user_service:UserService = Depends(get_user_service)
+        user_service:UserService = Depends(get_user_service),
+        current_user:str = Depends(get_current_user)
     ) ->UserResponse:
     return user_service.get_users()
 @users_router.get(
