@@ -6,6 +6,9 @@ class Settings(BaseSettings):
     database_name:str
     database_port:str
     database_username:str
+    secret_key:str
+    algorithm:str
+    token_expire:str
     model_config = SettingsConfigDict(
         env_file=".env"
     )
