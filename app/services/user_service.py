@@ -29,7 +29,7 @@ class UserService:
     def get_user_by_id(self,user_id:UUID):
         user = self.repository.get_by_id(user_id)
         if user is None:
-            raise UserNotFoundError()
+            raise UserNotFoundError(user_id)
         return user
 
     def patch_user(self,user_id:UUID,request:UserUpdate):

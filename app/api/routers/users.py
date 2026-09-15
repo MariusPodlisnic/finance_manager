@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import APIRouter,Depends,Query,status
+from fastapi import APIRouter,Depends,status
 from app.api.deps import get_user_service
 from app.api.responses import error_responses
 from app.api.schemas.user_schemas import (
@@ -7,7 +7,6 @@ from app.api.schemas.user_schemas import (
     UserCreate,
     UserResponse
 )
-from app.services import user_service
 from app.services.user_service import UserService
 from app.api.deps import get_current_user
 
