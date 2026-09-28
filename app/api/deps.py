@@ -4,7 +4,7 @@ from app.db.database import get_db
 from app.repositories import user_repository
 from app.repositories.user_repository.sqlalchemy_user_repository import SqlAlchemyUserRepository
 from app.services.user_service import UserService
-from app.utils.password import oauth2_scheme,password_context
+from app.utils.password import oauth2_scheme
 from app.core.security import verify_access_token
 from app.db.models import User
 

@@ -10,7 +10,7 @@ ALGORITHM = f"{settings.algorithm}"
 TOKEN_EXPIRE = f"{settings.token_expire}"
 
 
-def create_token(data:dict):
+def create_token(data: dict):
     to_encode = data.copy()
     expire_time = datetime.utcnow() + timedelta(minutes=int(TOKEN_EXPIRE))
     to_encode.update({"exp":expire_time})
