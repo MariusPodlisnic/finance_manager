@@ -1,9 +1,8 @@
 from __future__ import annotations
-from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from app.api.schemas.account_schemas import AccountUpdate, AccountCreate
+from app.api.schemas.account_schemas import AccountUpdate
 from app.db.models import Account
 from app.repositories.account_repository.base import AccountRepository
 
@@ -13,12 +12,12 @@ class SqlAlchemyAccountRepository(AccountRepository):
 
     def get_accounts(
             self,
-            user_id:UUID) -> list[Account]:
+            user_id:int) -> list[Account]:
         statement = select(Account).where(Account.user_id == user_id)
         return list(self.db.scalars(statement))
     def get_by_name(self,
                     name:str,
-                    user_id: UUID) -> Account | None:
+                    user_id: int) -> Account | None:
         statement = select(Account).where(
             Account.name == name,
                         Account.user_id == user_id
@@ -26,8 +25,8 @@ class SqlAlchemyAccountRepository(AccountRepository):
         account = self.db.scalar(statement)
         return account
     def get_by_id(self,
-                  account_id:UUID,
-                  user_id:UUID) -> Account | None:
+                  account_id:int,
+                  user_id:int) -> Account | None:
         statement = select(Account).where(
             Account.id == account_id,
             Account.user_id == user_id

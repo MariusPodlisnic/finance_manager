@@ -7,7 +7,7 @@ from app.services.user_service import UserService
 from app.services.account_service import AccountService
 from app.utils.password import oauth2_scheme
 from app.core.security import verify_access_token
-from app.db.models import User
+
 
 def get_user_service(
         db:Session = Depends(get_db)
@@ -21,8 +21,6 @@ def get_account_service(
     account_repository = SqlAlchemyAccountRepository(db)
     return AccountService(account_repository)
 
-def get_current_user(token:str = Depends(oauth2_scheme),db:Session = Depends(get_db)):
+def get_current_user(token:str = Depends(oauth2_scheme)):
     token = verify_access_token(token)
-    user = db.query(User).filter(User.email == token.email).first()
-
-    return user
+    return {"email":token.email, "user_id":token.user_id, "role":token.role}

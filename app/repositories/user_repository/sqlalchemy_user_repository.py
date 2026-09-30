@@ -1,12 +1,9 @@
 from __future__ import annotations
-from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy import select,func
-
 from app.api.schemas.user_schemas import UserUpdate
 from app.db.models import User
 from app.repositories.user_repository.base import UserRepository
-from app.exceptions.user_exceptions import UserNotFoundError
 
 class SqlAlchemyUserRepository(UserRepository):
     def __init__(self,db:Session):
@@ -24,7 +21,7 @@ class SqlAlchemyUserRepository(UserRepository):
 
         return data
 
-    def get_by_id(self,user_id:UUID) -> User | None:
+    def get_by_id(self,user_id:int) -> User | None:
         statement = select(User).where(User.id == user_id)
         user = self.db.scalar(statement)
         return user

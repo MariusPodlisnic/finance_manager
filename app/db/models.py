@@ -23,10 +23,9 @@ class Base(DeclarativeBase):
 
 class User(Base):
     __tablename__ = "users"
-    id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    id:Mapped[int] = mapped_column(
+        Integer,
         primary_key=True,
-        default=uuid.uuid4
     )
     email:Mapped[str] = mapped_column(
         String,
@@ -37,6 +36,11 @@ class User(Base):
         String,
         nullable=False
     )
+    role:Mapped[str] = mapped_column(
+        String,
+        nullable=False,
+        default = 'user'
+    )
     created_at:Mapped[datetime] = mapped_column(
         DateTime,
         nullable=False,
@@ -46,10 +50,9 @@ class User(Base):
 
 class Account(Base):
     __tablename__ = "accounts"
-    id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    id:Mapped[int] = mapped_column(
+        Integer,
         primary_key=True,
-        default=uuid.uuid4
     )
     name:Mapped[str] = mapped_column(
         String(255),
@@ -64,8 +67,8 @@ class Account(Base):
         Enum(CurrencyType),
         nullable=False
     )
-    user_id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    user_id:Mapped[int] = mapped_column(
+        Integer,
         ForeignKey("users.id",ondelete="CASCADE"),
         nullable=False
     )
@@ -78,10 +81,9 @@ class Account(Base):
 
 class Category(Base):
     __tablename__ = "categories"
-    id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    id:Mapped[int] = mapped_column(
+        Integer,
         primary_key=True,
-        default=uuid.uuid4
     )
     name:Mapped[str] = mapped_column(
         String(255),
@@ -91,18 +93,17 @@ class Category(Base):
         Enum(TransactionType),
         nullable=False
     )
-    user_id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    user_id:Mapped[int] = mapped_column(
+        Integer,
         ForeignKey("users.id",ondelete="CASCADE"),
         nullable=False
     )
 
 class Transaction(Base):
     __tablename__ = "transactions"
-    id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    id:Mapped[int] = mapped_column(
+        Integer,
         primary_key=True,
-        default=uuid.uuid4
     )
     amount:Mapped[Decimal] = mapped_column(
         Numeric(10,2),
@@ -112,13 +113,13 @@ class Transaction(Base):
         String(255),
         nullable=True
     )
-    category_id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    category_id:Mapped[int] = mapped_column(
+        Integer,
         ForeignKey("categories.id"),
         nullable=False
     )
-    account_id:Mapped[uuid.UUID] = mapped_column(
-        Uuid,
+    account_id:Mapped[int] = mapped_column(
+        Integer,
         ForeignKey("accounts.id"),
         nullable=False
     )

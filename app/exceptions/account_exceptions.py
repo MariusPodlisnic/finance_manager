@@ -1,11 +1,11 @@
-from uuid import UUID
+
 from starlette import status
 from app.utils.custom_exception import AppException
 
 class AccountNotFoundError(AppException):
     def __init__(
         self,
-        account_id: UUID
+        account_id: int
     ):
         super().__init__(
             message=f"Account with id {account_id} was not found",

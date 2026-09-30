@@ -5,7 +5,7 @@ from app.utils.custom_exception import AppException
 class UserNotFoundError(AppException):
     def __init__(
         self,
-        user_id: UUID
+        user_id: int
     ):
         super().__init__(
             message=f"User with id {user_id} was not found",

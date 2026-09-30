@@ -1,4 +1,3 @@
-from uuid import UUID
 from app.repositories.user_repository.base import UserRepository
 from app.db.models import User
 from app.api.schemas.user_schemas import UserCreate,UserUpdate
@@ -9,7 +8,7 @@ class UserService:
     def __init__(self,repository:UserRepository):
         self.repository = repository
 
-    def get_users(self):
+    def get_users(self,):
         return self.repository.get_users()
 
     def create_user(self , request:UserCreate):
@@ -22,17 +21,18 @@ class UserService:
 
         user = User(
             email=request.email,
-            password=hashed_password
+            password=hashed_password,
+            role=request.role
         )
         return self.repository.create(user)
 
-    def get_user_by_id(self,user_id:UUID):
+    def get_user_by_id(self,user_id:int):
         user = self.repository.get_by_id(user_id)
         if user is None:
             raise UserNotFoundError(user_id)
         return user
 
-    def patch_user(self,user_id:UUID,request:UserUpdate):
+    def patch_user(self,user_id:int,request:UserUpdate):
         user = self.get_user_by_id(user_id)
 
         if request.email is not None:
@@ -44,6 +44,7 @@ class UserService:
 
         return self.repository.update(user, request)
 
-    def delete_user(self,user_id:UUID) -> None:
+    def delete_user(self,
+                    user_id:int) -> None:
         user = self.get_user_by_id(user_id)
         self.repository.delete_user(user)

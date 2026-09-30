@@ -1,12 +1,10 @@
 from __future__ import annotations
-
-from uuid import UUID
 from pydantic import BaseModel,ConfigDict,Field
 from app.utils.enums.transaction_type import TransactionType
 
 class CategoryResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    id:UUID
+    id:int
     name:str
     type:TransactionType
 

@@ -2,10 +2,12 @@ from collections.abc import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import settings
+from app.db.models import Base
+
 DATABASE_URL = f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}"
 
 engine = create_engine(DATABASE_URL)
-
+Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(bind=engine,autoflush=False,autocommit=False)
 
 def get_db() -> Generator[Session,None,None]:

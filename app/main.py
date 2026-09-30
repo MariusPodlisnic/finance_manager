@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from app.api.routers.users import users_router
 from app.api.routers.account import account_router
 from app.api.routers.auth import login_router
+from app.api.routers.admin import admin_router
 app = FastAPI(title="Finance managing API")
 
 app.include_router(users_router)
 app.include_router(login_router)
 app.include_router(account_router)
+app.include_router(admin_router)
