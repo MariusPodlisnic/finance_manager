@@ -16,6 +16,7 @@ class AccountResponse(BaseModel):
 
 class AccountCreate(BaseModel):
     name:str = Field(min_length=1,max_length=255)
+    balance: Decimal
     currency:CurrencyType
 
 class AccountUpdate(BaseModel):
@@ -24,4 +25,5 @@ class AccountUpdate(BaseModel):
         min_length=1,
         max_length=255
     )
+    balance:Decimal | None = None
     currency:CurrencyType | None = None
