@@ -1,9 +1,9 @@
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.orm import Session
-from sqlalchemy import select,func
+from sqlalchemy import select
 
-from app.api.schemas.account_schemas import AccountUpdate
+from app.api.schemas.account_schemas import AccountUpdate, AccountCreate
 from app.db.models import Account
 from app.repositories.account_repository.base import AccountRepository
 
@@ -16,7 +16,15 @@ class SqlAlchemyAccountRepository(AccountRepository):
             user_id:UUID) -> list[Account]:
         statement = select(Account).where(Account.user_id == user_id)
         return list(self.db.scalars(statement))
-
+    def get_by_name(self,
+                    name:str,
+                    user_id: UUID) -> Account | None:
+        statement = select(Account).where(
+            Account.name == name,
+                        Account.user_id == user_id
+        )
+        account = self.db.scalar(statement)
+        return account
     def get_by_id(self,
                   account_id:UUID,
                   user_id:UUID) -> Account | None:
@@ -38,7 +46,7 @@ class SqlAlchemyAccountRepository(AccountRepository):
                account:Account,
                data:AccountUpdate) -> Account:
         updated_data = data.model_dump(exclude_unset=True)
-        for field,value in updated_data:
+        for field,value in updated_data.items():
             setattr(account,field,value)
 
         self.db.commit()
