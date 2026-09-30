@@ -1,6 +1,4 @@
 from __future__ import annotations
-
-from uuid import UUID
 from datetime import datetime
 from decimal import Decimal
 from pydantic import BaseModel,ConfigDict,Field
@@ -8,7 +6,7 @@ from app.utils.enums.currency_type import CurrencyType
 
 class AccountResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    id:UUID
+    id:int
     name:str
     balance:Decimal
     currency:CurrencyType

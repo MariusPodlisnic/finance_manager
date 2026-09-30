@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from fastapi import APIRouter,Depends,status
 from app.api.deps import get_current_user,get_account_service
 from app.api.responses import error_responses
@@ -18,7 +16,7 @@ account_router = APIRouter(
     responses=error_responses(400,500)
 )
 def get_accounts(
-        user_id: UUID,
+        user_id: int,
         account_service: AccountService = Depends(get_account_service),
         current_user:str = Depends(get_current_user)
 ) -> AccountResponse:
@@ -32,7 +30,7 @@ def get_accounts(
 )
 
 def create_account(
-        user_id: UUID,
+        user_id: int,
         data: AccountCreate,
         account_service: AccountService = Depends(get_account_service),
         current_user: str = Depends(get_current_user)
@@ -47,8 +45,8 @@ def create_account(
 )
 
 def update_account(
-        user_id: UUID,
-        account_id: UUID,
+        user_id: int,
+        account_id: int,
         data: AccountUpdate,
         account_service: AccountService = Depends(get_account_service),
         current_user: str = Depends(get_current_user)
@@ -63,8 +61,8 @@ def update_account(
 )
 
 def delete_account(
-        user_id: UUID,
-        account_id: UUID,
+        user_id: int,
+        account_id: int,
         account_service: AccountService = Depends(get_account_service),
         current_user: str = Depends(get_current_user)
 ):

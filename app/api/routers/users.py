@@ -1,31 +1,18 @@
-from uuid import UUID
 from fastapi import APIRouter,Depends,status
-from app.api.deps import get_user_service
+from app.api.deps import get_user_service,get_current_user
 from app.api.responses import error_responses
 from app.api.schemas.user_schemas import (
     UserUpdate,
     UserCreate,
     UserResponse
 )
+from app.exceptions.login_exceptions import NotAuthenticated
 from app.services.user_service import UserService
-from app.api.deps import get_current_user
 
 users_router = APIRouter(
     prefix="/api/users",
     tags=["Users"]
 )
-
-@users_router.get(
-    "",
-    response_model=list[UserResponse],
-    summary="Get users",
-    responses=error_responses(400,500)
-)
-def get_users(
-        user_service:UserService = Depends(get_user_service),
-        current_user:str = Depends(get_current_user)
-    ) ->UserResponse:
-    return user_service.get_users()
 @users_router.get(
     "/{user_id}",
     response_model=UserResponse,
@@ -33,9 +20,12 @@ def get_users(
     responses=error_responses(400,404,500)
 )
 def get_user_by_id(
-        user_id:UUID,
-        user_service:UserService = Depends(get_user_service)
+        user_id:int,
+        user_service:UserService = Depends(get_user_service),
+        current_user = Depends(get_current_user)
 ):
+    if not current_user:
+        raise NotAuthenticated
     return user_service.get_user_by_id(user_id)
 @users_router.post(
     "",
@@ -56,10 +46,13 @@ def create_user(
     responses=error_responses(400,404,500)
 )
 def update_user(
-        user_id:UUID,
+        user_id:int,
         user_data:UserUpdate,
         user_service:UserService = Depends(get_user_service),
+        current_user = Depends(get_current_user)
 ):
+    if not current_user:
+        raise NotAuthenticated
     return user_service.patch_user(user_id,user_data)
 
 @users_router.delete(
@@ -69,7 +62,10 @@ def update_user(
     responses=error_responses(404,500)
 )
 def delete_user(
-        user_id:UUID,
-        user_service:UserService = Depends(get_user_service)
+        user_id:int,
+        user_service:UserService = Depends(get_user_service),
+        current_user = Depends(get_current_user)
 ):
+    if not current_user:
+        raise NotAuthenticated
     user_service.delete_user(user_id)

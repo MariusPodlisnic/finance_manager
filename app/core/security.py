@@ -21,9 +21,11 @@ def verify_access_token(token:str):
     try:
         payload = jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
         email:str = payload.get("email")
+        role:str = payload.get("role")
+        user_id:int = payload.get("user_id")
         if not email:
             raise WrongCredentials
-        return TokenData(email=email)
+        return TokenData(email=email,role=role,user_id=user_id)
     except InvalidTokenError:
         raise WrongCredentials
 

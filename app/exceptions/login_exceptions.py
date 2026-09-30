@@ -10,3 +10,11 @@ class WrongCredentials(AppException):
             status_code=status.HTTP_403_FORBIDDEN,
             error_code="wrong_credentials"
         )
+class NotAuthenticated(AppException):
+    def __init__(
+            self):
+        super().__init__(
+            message="Not Authenticated",
+            status_code=status.HTTP_403_FORBIDDEN,
+            error_code="not_authenticated"
+        )
