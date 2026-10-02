@@ -18,3 +18,12 @@ class NotAuthenticated(AppException):
             status_code=status.HTTP_403_FORBIDDEN,
             error_code="not_authenticated"
         )
+
+class WrongCurrentPassword(AppException):
+    def __init__(
+            self):
+        super().__init__(
+            message="Wrong current password",
+            status_code=status.HTTP_403_FORBIDDEN,
+            error_code="wrong_current_password"
+        )

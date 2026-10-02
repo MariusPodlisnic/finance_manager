@@ -1,8 +1,9 @@
 from app.repositories.user_repository.base import UserRepository
 from app.db.models import User
-from app.api.schemas.user_schemas import UserCreate,UserUpdate
+from app.api.schemas.user_schemas import UserCreate,UserUpdate,UserChangePassword
 from app.exceptions.user_exceptions import UserEmailAlreadyExists,UserNotFoundError
-from app.utils.password import hash_password
+from app.exceptions.login_exceptions import WrongCurrentPassword
+from app.utils.password import hash_password,verify_password
 
 class UserService:
     def __init__(self,repository:UserRepository):
@@ -43,6 +44,12 @@ class UserService:
                 raise UserEmailAlreadyExists(request.email)
 
         return self.repository.update(user, request)
+    def change_password(self,user_id:int, request:UserChangePassword):
+        user = self.get_user_by_id(user_id)
+        if not verify_password(request.current_password,user.password):
+            raise WrongCurrentPassword
+        new_password = hash_password(request.new_password)
+        return self.repository.update_password(user,new_password)
 
     def delete_user(self,
                     user_id:int) -> None:

@@ -4,7 +4,7 @@ from app.api.responses import error_responses
 from app.api.schemas.user_schemas import (
     UserUpdate,
     UserCreate,
-    UserResponse
+    UserResponse, UserChangePassword
 )
 from app.exceptions.login_exceptions import NotAuthenticated
 from app.services.user_service import UserService
@@ -55,6 +55,20 @@ def update_user(
         raise NotAuthenticated
     return user_service.patch_user(user_id,user_data)
 
+@users_router.put(
+    "/{user_id}",
+    summary="Change current password",
+    responses = error_responses(400,404,500)
+)
+def update_password(
+        user_id:int,
+        data:UserChangePassword,
+        user_service:UserService = Depends(get_user_service),
+        current_user = Depends(get_current_user)
+):
+    if not current_user:
+        raise NotAuthenticated
+    return user_service.change_password(user_id,data)
 @users_router.delete(
     "/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,

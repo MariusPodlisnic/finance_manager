@@ -15,3 +15,7 @@ class UserCreate(BaseModel):
 
 class UserUpdate(BaseModel):
     email:EmailStr
+
+class UserChangePassword(BaseModel):
+    current_password:str
+    new_password:str

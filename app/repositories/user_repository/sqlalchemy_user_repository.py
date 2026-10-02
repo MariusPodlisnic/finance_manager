@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy.orm import Session
 from sqlalchemy import select,func
-from app.api.schemas.user_schemas import UserUpdate
+from app.api.schemas.user_schemas import UserUpdate, UserChangePassword
 from app.db.models import User
 from app.repositories.user_repository.base import UserRepository
 
@@ -40,7 +40,10 @@ class SqlAlchemyUserRepository(UserRepository):
         self.db.refresh(user)
 
         return user
-
+    def update_password(self,user:User,new_password:str):
+        user.password = new_password
+        self.db.commit()
+        self.db.refresh(user)
     def delete_user(self,user:User) -> None:
         self.db.delete(user)
         self.db.commit()
